@@ -133,7 +133,7 @@ export default function Hero() {
           {PILLS.map(({ label, pos }) => (
             <div
               key={label}
-              className={`absolute ${pos} bg-white/90 backdrop-blur-sm rounded-full px-3.5 py-1.5 shadow-md border border-white`}
+              className={`absolute ${pos} bg-white/95 rounded-full px-3.5 py-1.5 shadow-md border border-white/60`}
             >
               <span className="text-xs font-semibold text-plum">{label}</span>
             </div>

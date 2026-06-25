@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -13,8 +14,20 @@ import FinalCTA from './components/FinalCTA';
 import Footer from './components/Footer';
 
 gsap.registerPlugin(ScrollTrigger);
+// iOS Safari batches scroll events and can mis-calculate positions on mount
+ScrollTrigger.config({ ignoreMobileResize: true });
 
 export default function App() {
+  useEffect(() => {
+    const refresh = () => ScrollTrigger.refresh();
+    if (document.readyState === 'complete') {
+      refresh();
+    } else {
+      window.addEventListener('load', refresh);
+      return () => window.removeEventListener('load', refresh);
+    }
+  }, []);
+
   return (
     <>
       <Navbar />

@@ -69,7 +69,7 @@ export default function Produtos() {
 
                 {/* Category tag */}
                 <div className="absolute top-4 left-4">
-                  <span className="inline-block bg-white/90 backdrop-blur-sm text-plum text-xs font-semibold uppercase tracking-[0.15em] px-3 py-1.5 rounded-full shadow-sm">
+                  <span className="inline-block bg-white/95 text-plum text-xs font-semibold uppercase tracking-[0.15em] px-3 py-1.5 rounded-full shadow-sm">
                     {p.tag}
                   </span>
                 </div>
