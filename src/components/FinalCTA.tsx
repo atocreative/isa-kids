@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import WhatsAppIcon from './WhatsAppIcon';
@@ -7,7 +7,7 @@ import { WA_DEFAULT } from '../data/content';
 export default function FinalCTA() {
   const ref = useRef<HTMLElement>(null);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const ctx = gsap.context(() => {
       if (reduced) return;
@@ -17,6 +17,7 @@ export default function FinalCTA() {
         stagger: 0.14,
         duration: 0.8,
         ease: 'power2.out',
+        immediateRender: false,
         scrollTrigger: {
           trigger: ref.current,
           start: 'top 72%',
@@ -24,7 +25,8 @@ export default function FinalCTA() {
         },
       });
     }, ref);
-    return () => ctx.revert();
+    const t = setTimeout(() => ScrollTrigger.refresh(), 120);
+    return () => { clearTimeout(t); ctx.revert(); };
   }, []);
 
   return (

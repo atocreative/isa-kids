@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowRight } from 'lucide-react';
@@ -8,7 +8,7 @@ import { VITRINE } from '../data/content';
 export default function Vitrine() {
   const ref = useRef<HTMLElement>(null);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const ctx = gsap.context(() => {
       if (reduced) return;
@@ -18,6 +18,7 @@ export default function Vitrine() {
         stagger: 0.12,
         duration: 0.8,
         ease: 'power2.out',
+        immediateRender: false,
         scrollTrigger: {
           trigger: '.vit-grid',
           start: 'top 78%',
@@ -25,7 +26,8 @@ export default function Vitrine() {
         },
       });
     }, ref);
-    return () => ctx.revert();
+    const t = setTimeout(() => ScrollTrigger.refresh(), 120);
+    return () => { clearTimeout(t); ctx.revert(); };
   }, []);
 
   return (

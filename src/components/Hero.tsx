@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ChevronDown } from 'lucide-react';
 import WhatsAppIcon from './WhatsAppIcon';
@@ -14,13 +14,13 @@ const PILLS = [
 export default function Hero() {
   const ref = useRef<HTMLElement>(null);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const ctx = gsap.context(() => {
       if (reduced) return;
 
-      // Entrance animation
-      gsap.timeline({ defaults: { ease: 'power3.out' } })
+      // Entrance animation — immediateRender:false prevents opacity:0 flash on iOS
+      gsap.timeline({ defaults: { ease: 'power3.out', immediateRender: false } })
         .from('.hw', { y: 80, opacity: 0, stagger: 0.12, duration: 0.9 })
         .from('.hs', { y: 24, opacity: 0, duration: 0.7 }, '-=0.5')
         .from('.hc > *', { y: 16, opacity: 0, stagger: 0.1, duration: 0.6 }, '-=0.4')

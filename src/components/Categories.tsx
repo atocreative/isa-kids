@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Heart, Sun, Zap, Crown, Shield, Tag, ArrowRight } from 'lucide-react';
@@ -16,7 +16,7 @@ const ICONS: Record<string, React.ComponentType<{ size?: number; strokeWidth?: n
 export default function Categories() {
   const ref = useRef<HTMLElement>(null);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const ctx = gsap.context(() => {
       if (reduced) return;
@@ -26,6 +26,7 @@ export default function Categories() {
         stagger: 0.1,
         duration: 0.7,
         ease: 'power2.out',
+        immediateRender: false,
         scrollTrigger: {
           trigger: '.cat-grid',
           start: 'top 78%',
@@ -33,7 +34,8 @@ export default function Categories() {
         },
       });
     }, ref);
-    return () => ctx.revert();
+    const t = setTimeout(() => ScrollTrigger.refresh(), 120);
+    return () => { clearTimeout(t); ctx.revert(); };
   }, []);
 
   return (

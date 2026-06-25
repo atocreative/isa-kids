@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import WhatsAppIcon from './WhatsAppIcon';
@@ -7,7 +7,7 @@ import { PRODUTOS } from '../data/content';
 export default function Produtos() {
   const ref = useRef<HTMLElement>(null);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const ctx = gsap.context(() => {
       if (reduced) return;
@@ -17,6 +17,7 @@ export default function Produtos() {
         y: 24,
         duration: 0.7,
         ease: 'power2.out',
+        immediateRender: false,
         scrollTrigger: { trigger: ref.current, start: 'top 80%', once: true },
       });
 
@@ -27,6 +28,7 @@ export default function Produtos() {
         stagger: 0.18,
         duration: 0.9,
         ease: 'back.out(1.3)',
+        immediateRender: false,
         scrollTrigger: {
           trigger: '.prod-grid',
           start: 'top 78%',
@@ -34,7 +36,8 @@ export default function Produtos() {
         },
       });
     }, ref);
-    return () => ctx.revert();
+    const t = setTimeout(() => ScrollTrigger.refresh(), 120);
+    return () => { clearTimeout(t); ctx.revert(); };
   }, []);
 
   return (
